@@ -42,7 +42,7 @@ body {
 
 .form-group {
   margin-bottom: 20px;
-  width: 90%;
+  width: 95%;
 }
 
 label {
@@ -89,4 +89,11 @@ input[type="password"] {
 .login-button:hover {
   background-color: #00192a;
   color: #88969b;
+}
+
+.signup-link {
+  margin-top: 30px;
+  color: #00192a;
+  cursor: pointer;
+  font-size: 18px;
 }

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import './LoginPage.css'; // Import your CSS file
-import logo from './logo.svg'; // Import your SVG logo file
+import './LoginPage.css';
+import logo from './logo.svg';
+import { NavLink } from 'react-router-dom'
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -15,7 +17,6 @@ const LoginPage = () => {
   };
 
   const handleLogin = () => {
-    // You can implement your login logic here
     console.log("Email:", email);
     console.log("Password:", password);
   };
@@ -50,6 +51,9 @@ const LoginPage = () => {
           <button className="login-button" type="button" onClick={handleLogin}>
             Login
           </button>
+          <p className='signup-link'>
+            Nu ai cont creat? Pentru a crea unul apasă <NavLink to='/signup' activeStyle>aici</NavLink>!
+          </p>
         </form>
       </div>
     </div>
