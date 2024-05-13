@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
 import './LoginPage.css';
 import logo from './logo.svg';
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { signInUserAuth, auth } from './firebase';
 
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleLogin = () => {
-    console.log("Email:", email);
-    console.log("Password:", password);
-  };
+  const handleLogin = async () => {
+    try {
+        await signInUserAuth(auth, email, password);
+        navigate('/homepage');
+    } catch (error) {
+      setError("Date invalide!");
+    }
+};
 
   return (
   <div className='login-page'>
@@ -33,7 +32,7 @@ const LoginPage = () => {
             <input
               type="email"
               value={email}
-              onChange={handleEmailChange}
+              onChange={(e) => setEmail(e.target.value)}
               className="text-input"
               required
             />
@@ -43,7 +42,7 @@ const LoginPage = () => {
             <input
               type="password"
               value={password}
-              onChange={handlePasswordChange}
+              onChange={(e) => setPassword(e.target.value)}
               className="text-input"
               required
             />
@@ -51,6 +50,7 @@ const LoginPage = () => {
           <button className="login-button" type="button" onClick={handleLogin}>
             Login
           </button>
+          {error && <p>{error}</p>}
           <p className='signup-link'>
             Nu ai cont creat? Pentru a crea unul apasă <NavLink to='/signup' activeStyle>aici</NavLink>!
           </p>

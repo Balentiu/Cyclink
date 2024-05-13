@@ -1,30 +1,24 @@
 import React, { useState } from 'react';
 import './SignupPage.css';
 import logo from './logo.svg';
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { createUserAuth, auth  } from './firebase';
 
 const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-  };
-
-  const handleSignUp = () => {
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Confirm Password:", confirmPassword);
-  };
+  const handleSignUp = async () => {
+    try {
+        await createUserAuth(auth, email, password);
+        navigate('/');
+    } catch (error) {
+      setError("Date invalide!");
+    }
+};
 
   return (
     <div className="signup-page">
@@ -38,7 +32,7 @@ const SignupPage = () => {
               <input
                 type="email"
                 value={email}
-                onChange={handleEmailChange}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -47,7 +41,7 @@ const SignupPage = () => {
               <input
                 type="password"
                 value={password}
-                onChange={handlePasswordChange}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
@@ -56,13 +50,14 @@ const SignupPage = () => {
               <input
                 type="password"
                 value={confirmPassword}
-                onChange={handleConfirmPasswordChange}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
             </div>
             <button className="signup-button" type="button" onClick={handleSignUp}>
                 Sign Up
             </button>
+            {error && <p>{error}</p>}
             <p className='login-link'>
              Ți-ai facut contul? Întoarce-te la pagina de logare apăsând <NavLink to='/' activeStyle>aici</NavLink>!
              </p>
