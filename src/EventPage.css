@@ -1,4 +1,4 @@
-.homepage {
+.eventpage {
     background-color: #05416C;
     height: 100vh;
     padding-top: 60px;
@@ -66,7 +66,7 @@
     text-decoration: underline;
 }
 
-.homepage-content {
+.eventpage-content {
     padding: 40px;
     color: #DBE6ED;
 }

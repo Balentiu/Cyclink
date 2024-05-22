@@ -2,9 +2,9 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { signOutUser, auth } from './firebase';
 import logo from './logo.svg';
-import './HomePage.css'
+import './GoingEventPage.css'
 
-const HomePage = () => {
+const GoingEventPage = () => {
     const navigate = useNavigate();
 
     const handleSignOut = () => {
@@ -18,7 +18,7 @@ const HomePage = () => {
     };
 
     return (
-        <div className="homepage">
+        <div className="goingeventpage">
             <nav className="navbar">
             <NavLink to="/homepage" className="navbar-logo-link">
                     <img src={logo} alt="Logo" className="navbar-logo" />
@@ -30,11 +30,11 @@ const HomePage = () => {
                     <button className="logout-button" onClick={handleSignOut}>Logout</button>
                 </div>
             </nav>
-            <div className="homepage-content">
-                <h1>Welcome to the Home Page!</h1>
+            <div className="goingeventpage-content">
+                <h1>Welcome to the Going Events Page!</h1>
             </div>
         </div>
     );
 };
 
-export default HomePage;
+export default GoingEventPage;
