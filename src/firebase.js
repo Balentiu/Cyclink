@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword as createUserAuth, signInWithEmailAndPassword as signInUserAuth, signOut as signOutUser } from "firebase/auth";
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref, set, push, onValue, remove } from 'firebase/database';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCAW-5h3sSU-fqBAcDMAK3Qc7lFDPHXhnY",
@@ -16,7 +16,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase(app);
 
-export { auth, database };
+export { auth, database, ref, push, onValue, remove };
 export { createUserAuth, signInUserAuth, signOutUser };
 export const createUserProfile = (uid, email) => {
     return set(ref(database, `users/${uid}`), { email });

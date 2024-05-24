@@ -71,4 +71,19 @@
     color: #DBE6ED;
 }
 
+.events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.event-block {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-left: 300px;
+    margin-right: 300px;
+    background: #fff;
+    color: #000;
+}
 

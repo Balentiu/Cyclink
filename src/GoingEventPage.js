@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { signOutUser, auth } from './firebase';
+import { signOutUser, auth, ref, onValue, remove } from './firebase';
+import { getDatabase} from 'firebase/database';
 import logo from './logo.svg';
 import './GoingEventPage.css'
 
 const GoingEventPage = () => {
     const navigate = useNavigate();
+    const [goingEvents, setGoingEvents] = useState([]);
 
     const handleSignOut = () => {
         signOutUser(auth)
@@ -17,8 +19,50 @@ const GoingEventPage = () => {
             });
     };
 
+    const database = getDatabase();
+
+    useEffect(() => {
+        const user = auth.currentUser;
+        if (user) {
+            const database = getDatabase();
+            const userEventsRef = ref(database, `users/${user.uid}/goingEvents`);
+            onValue(userEventsRef, (snapshot) => {
+                const eventData = snapshot.val();
+                if (eventData) {
+                    const eventIds = Object.keys(eventData);
+                    const promises = eventIds.map((eventId) => {
+                        const eventRef = ref(database, `events/${eventId}`);
+                        return new Promise((resolve) => {
+                            onValue(eventRef, (snapshot) => {
+                                const eventDetails = snapshot.val();
+                                resolve({ id: eventId, ...eventDetails });
+                            });
+                        });
+                    });
+                    Promise.all(promises).then((events) => {
+                        setGoingEvents(events);
+                    });
+                } else {
+                    setGoingEvents([]);
+                }
+            });
+        }
+    }, [database]);
+
+    const handleLeaveEvent = (eventId) => {
+        const user = auth.currentUser;
+        if (user) {
+            const eventParticipantRef = ref(database, `events/${eventId}/participants/${user.uid}`);
+            remove(eventParticipantRef);
+
+            const userEventRef = ref(database, `users/${user.uid}/goingEvents/${eventId}`);
+            remove(userEventRef);
+        }
+    };
+
     return (
         <div className="goingeventpage">
+
             <nav className="navbar">
             <NavLink to="/homepage" className="navbar-logo-link">
                     <img src={logo} alt="Logo" className="navbar-logo" />
@@ -30,8 +74,27 @@ const GoingEventPage = () => {
                     <button className="logout-button" onClick={handleSignOut}>Logout</button>
                 </div>
             </nav>
+
             <div className="goingeventpage-content">
-                <h1>Welcome to the Going Events Page!</h1>
+                <h2>Going Events</h2>
+                <div className="events-list">
+                    {goingEvents.map((event) => (
+                        <div className="event-block" key={event.id}>
+                            <h3>{event.name}</h3>
+                            <p>Data: {event.date}</p>
+                            <p>Locatie: {event.location}</p>
+                            <p>Lungime traseu: {event.length}</p>
+                            <p>Tipul traseului: {event.type}</p>
+                            <button onClick={() => handleLeaveEvent(event.id)}>Părăsește evenimentul</button>
+                            <p>Participanți:</p>
+                            <ul>
+                                {event.participants && Object.values(event.participants).map((participant, index) => (
+                                    <li key={index}>{participant.name}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
