@@ -1,11 +1,40 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { signOutUser, auth } from './firebase';
-import logo from './logo.svg'; // Ensure this path is correct
+import { signOutUser, auth, database, ref, onValue, set } from './firebase';
+import logo from './logo.svg';
 import './ProfilePage.css'
 
 const ProfilePage = () => {
     const navigate = useNavigate();
+    const [profile, setProfile] = useState({
+        fullName: '',
+        age: '',
+        gender: 'Masculin',
+        experience: 'Începător',
+    });
+
+    useEffect(() => {
+        const user = auth.currentUser;
+        if (user) {
+            const profileRef = ref(database, `users/${user.uid}/profile`);
+            onValue(profileRef, (snapshot) => {
+                setProfile(snapshot.val() || {});
+            });
+        }
+    }, []);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setProfile({ ...profile, [name]: value });
+    };
+
+    const handleSaveProfile = () => {
+        const user = auth.currentUser;
+        if (user) {
+            const profileRef = ref(database, `users/${user.uid}/profile`);
+            set(profileRef, profile);
+        }
+    };
 
     const handleSignOut = () => {
         signOutUser(auth)
@@ -30,8 +59,28 @@ const ProfilePage = () => {
                     <button className="logout-button" onClick={handleSignOut}>Logout</button>
                 </div>
             </nav>
-            <div className="profilepage-content">
-                <h1>Welcome to the Profile Page!</h1>
+            <div className="profile-container">
+                <h2>Profile Page</h2>
+                <label>Nume întreg:</label>
+                <input type="text" name="fullName" value={profile.fullName} onChange={handleInputChange} />
+
+                <label>Vârsta:</label>
+                <input type="number" name="age" value={profile.age} onChange={handleInputChange} />
+
+                <label>Gen:</label>
+                <select name="gender" value={profile.gender} onChange={handleInputChange}>
+                    <option value="Male">Masculin</option>
+                    <option value="Female">Feminim</option>
+                    <option value="Other">Altul</option>
+                </select>
+
+                <label>Experiența:</label>
+                <select name="experience" value={profile.experience} onChange={handleInputChange}>
+                    <option value="Începător">Începător</option>
+                    <option value="Avansat">Avansat</option>
+                </select>
+
+                <button onClick={handleSaveProfile}>Salvează</button>
             </div>
         </div>
     );

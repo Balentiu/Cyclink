@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { signOutUser, auth, ref, onValue, remove } from './firebase';
+import { signOutUser, auth, ref, onValue, set } from './firebase';
 import { getDatabase} from 'firebase/database';
 import logo from './logo.svg';
 import './GoingEventPage.css'
@@ -52,11 +52,11 @@ const GoingEventPage = () => {
     const handleLeaveEvent = (eventId) => {
         const user = auth.currentUser;
         if (user) {
-            const eventParticipantRef = ref(database, `events/${eventId}/participants/${user.uid}`);
-            remove(eventParticipantRef);
+            const eventRef = ref(database, `events/${eventId}/participants/${user.uid}`);
+            set(eventRef, null);
 
-            const userEventRef = ref(database, `users/${user.uid}/goingEvents/${eventId}`);
-            remove(userEventRef);
+            const userEventsRef = ref(database, `users/${user.uid}/goingEvents/${eventId}`);
+            set(userEventsRef, null);
         }
     };
 
@@ -82,9 +82,10 @@ const GoingEventPage = () => {
                         <div className="event-block" key={event.id}>
                             <h3>{event.name}</h3>
                             <p>Data: {event.date}</p>
-                            <p>Locatie: {event.location}</p>
+                            <p>Locație: {event.location}</p>
                             <p>Lungime traseu: {event.length}</p>
                             <p>Tipul traseului: {event.type}</p>
+                            <p>Dificultate: {event.difficulty}</p>
                             <button onClick={() => handleLeaveEvent(event.id)}>Părăsește evenimentul</button>
                             <p>Participanți:</p>
                             <ul>

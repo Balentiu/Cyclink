@@ -2,6 +2,7 @@
     background-color: #05416C;
     height: 100vh;
     padding-top: 60px;
+    padding: 20px;
 }
 
 .navbar {
@@ -72,3 +73,26 @@
 }
 
 
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-form label {
+    margin-bottom: 5px;
+}
+
+.profile-form input,
+.profile-form select {
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.profile-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
