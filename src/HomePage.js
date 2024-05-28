@@ -27,6 +27,7 @@ const HomePage = () => {
                     <NavLink to="/profile" className="navbar-link">Profile</NavLink>
                     <NavLink to="/events" className="navbar-link">Events</NavLink>
                     <NavLink to="/goingevent" className="navbar-link">Going Events</NavLink>
+                    <NavLink yo="/bikeshopsmap" className="navbar-link">Bike Shops</NavLink>
                     <button className="logout-button" onClick={handleSignOut}>Logout</button>
                 </div>
             </nav>
