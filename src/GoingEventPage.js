@@ -71,7 +71,7 @@ const GoingEventPage = () => {
                     <NavLink to="/profile" className="navbar-link">Profile</NavLink>
                     <NavLink to="/events" className="navbar-link">Events</NavLink>
                     <NavLink to="/goingevent" className="navbar-link">Going Events</NavLink>
-                    <NavLink yo="/bikeshopsmap" className="navbar-link">Bike Shops</NavLink>
+                    <NavLink to="/bikeshopsmap" className="navbar-link">Bike Shops</NavLink>
                     <button className="logout-button" onClick={handleSignOut}>Logout</button>
                 </div>
             </nav>
@@ -84,7 +84,7 @@ const GoingEventPage = () => {
                             <h3>{event.name}</h3>
                             <p>Data: {event.date}</p>
                             <p>Locație: {event.location}</p>
-                            <p>Lungime traseu: {event.length}</p>
+                            <p>Lungime traseu: {event.length} km</p>
                             <p>Tipul traseului: {event.type}</p>
                             <p>Dificultate: {event.difficulty}</p>
                             <button onClick={() => handleLeaveEvent(event.id)}>Părăsește evenimentul</button>

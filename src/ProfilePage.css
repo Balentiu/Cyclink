@@ -1,8 +1,7 @@
 .profilepage {
     background-color: #05416C;
-    height: 100vh;
+    min-height: 100vh;
     padding-top: 60px;
-    padding: 20px;
 }
 
 .navbar {
@@ -67,32 +66,57 @@
     text-decoration: underline;
 }
 
-.profilepage-content {
-    padding: 40px;
-    color: #DBE6ED;
+.profile-wrapper{
+    
+    margin-top: 200px;
+    width: 110%;
+    max-width: 700px;
+    height: 110%;
+    max-height: 700px;
+    border-radius: 40px;
+    background-color: #DBE6ED;
 }
 
-
-.profile-form {
+.profile-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-}
+    align-items: center;
+  }
 
-.profile-form label {
+.form-group {
+    margin-bottom: 20px;
+    width: 95%;
+  }
+
+label {
+    display: block;
     margin-bottom: 5px;
-}
+    font-weight: bold;
+  }
 
-.profile-form input,
-.profile-form select {
-    padding: 8px;
+  .text-input {
+    width: 100%;
+    padding: 10px;
+    background-color: #ADC1C7;
+    color: #00171F;
     margin-bottom: 10px;
-}
+  }
+  
+  .text-input:focus {
+    outline: none;
+    border-color: #001730;
+  }
 
-.profile-form button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
+.profile-button {
+    margin-top: 40px;
+    width: 101%;
+    padding: 15px 20px;
+    background-color: #003459;
+    color: #ADC1C7;
+    border-radius: 10px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
 }

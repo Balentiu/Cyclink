@@ -12,6 +12,7 @@ const BikeShopsMap = () => {
   const [selectedShop, setSelectedShop] = useState(null);
   const [shops, setShops] = useState([]);
   const navigate = useNavigate();
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   const containerStyle = {
     width: '100%',
@@ -39,6 +40,10 @@ const BikeShopsMap = () => {
     });
   }, []);
 
+  useEffect(() => {
+    setMapLoaded(true);
+  }, []);
+
   const handleSignOut = () => {
     signOutUser(auth)
         .then(() => {
@@ -55,44 +60,46 @@ const BikeShopsMap = () => {
         <nav className="navbar">
             <NavLink to="/homepage" className="navbar-logo-link">
                     <img src={logo} alt="Logo" className="navbar-logo" />
-            </NavLink>
-            <div className="navbar-links">
-                <NavLink to="/profile" className="navbar-link">Profile</NavLink>
-                <NavLink to="/events" className="navbar-link">Events</NavLink>
-                <NavLink to="/goingevent" className="navbar-link">Going Events</NavLink>
-                <NavLink yo="/bikeshopsmap" className="navbar-link">Bike Shops</NavLink>
-                <button className="logout-button" onClick={handleSignOut}>Logout</button>
-            </div>
-        </nav>
+                </NavLink>
+                <div className="navbar-links">
+                    <NavLink to="/profile" className="navbar-link">Profile</NavLink>
+                    <NavLink to="/events" className="navbar-link">Events</NavLink>
+                    <NavLink to="/goingevent" className="navbar-link">Going Events</NavLink>
+                    <NavLink to="/bikeshopsmap" className="navbar-link">Bike Shops</NavLink>
+                    <button className="logout-button" onClick={handleSignOut}>Logout</button>
+                </div>
+            </nav>
 
-      <LoadScript googleMapsApiKey="AIzaSyC4l9duK_Mk7E8v7RWboNl_0dkEJuhu23c">
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={13}
-        >
-          {shops.map((shop) => (
-            <Marker
-              key={shop.id}
-              position={shop.position}
-              icon={bikelogo}
-              onClick={() => setSelectedShop(shop)}
-            />
-          ))}
+        {mapLoaded && (
+        <LoadScript googleMapsApiKey="AIzaSyC4l9duK_Mk7E8v7RWboNl_0dkEJuhu23c">
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={13}
+          >
+            {shops.map((shop) => (
+              <Marker
+                key={shop.id}
+                position={shop.position}
+                icon={bikelogo}
+                onClick={() => setSelectedShop(shop)}
+              />
+            ))}
 
-          {selectedShop && (
-            <InfoWindow
-              position={selectedShop.position}
-              onCloseClick={() => setSelectedShop(null)}
-            >
-              <div>
-                <h2>{selectedShop.name}</h2>
-                <p>{selectedShop.address}</p>
-              </div>
-            </InfoWindow>
-          )}
-        </GoogleMap>
-      </LoadScript>
+            {selectedShop && (
+              <InfoWindow
+                position={selectedShop.position}
+                onCloseClick={() => setSelectedShop(null)}
+              >
+                <div>
+                  <h2>{selectedShop.name}</h2>
+                  <p>{selectedShop.address}</p>
+                </div>
+              </InfoWindow>
+            )}
+          </GoogleMap>
+        </LoadScript>
+      )}
     </div>
   );
 };

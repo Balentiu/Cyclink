@@ -27,12 +27,15 @@ const HomePage = () => {
                     <NavLink to="/profile" className="navbar-link">Profile</NavLink>
                     <NavLink to="/events" className="navbar-link">Events</NavLink>
                     <NavLink to="/goingevent" className="navbar-link">Going Events</NavLink>
-                    <NavLink yo="/bikeshopsmap" className="navbar-link">Bike Shops</NavLink>
+                    <NavLink to="/bikeshopsmap" className="navbar-link">Bike Shops</NavLink>
                     <button className="logout-button" onClick={handleSignOut}>Logout</button>
                 </div>
             </nav>
-            <div className="homepage-content">
-                <h1>Welcome to the Home Page!</h1>
+            <div className="background-container">
+            <div className="text-overlay">
+                <h1>Welcome to Cyclink!</h1>
+                <p>Your ultimate cycling companion!</p>
+            </div>
             </div>
         </div>
     );
