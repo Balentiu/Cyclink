@@ -8,6 +8,7 @@ import './GoingEventPage.css'
 const GoingEventPage = () => {
     const navigate = useNavigate();
     const [goingEvents, setGoingEvents] = useState([]);
+    const [loading, setLoading]=useState(true);
 
     const handleSignOut = () => {
         signOutUser(auth)
@@ -19,52 +20,59 @@ const GoingEventPage = () => {
             });
     };
 
-    const database = getDatabase();
-
     useEffect(() => {
         const user = auth.currentUser;
         if (user) {
             const database = getDatabase();
             const userEventsRef = ref(database, `users/${user.uid}/goingEvents`);
-            onValue(userEventsRef, (snapshot) => {
+           const unsubscribe = onValue(userEventsRef, async (snapshot) => {
                 const eventData = snapshot.val();
                 if (eventData) {
                     const eventIds = Object.keys(eventData);
-                    const promises = eventIds.map((eventId) => {
+                    const events = await Promise.all(eventIds.map(async (eventId) => {
                         const eventRef = ref(database, `events/${eventId}`);
                         return new Promise((resolve) => {
-                            onValue(eventRef, (snapshot) => {
-                                const eventDetails = snapshot.val();
+                            onValue(eventRef, (eventSnapshot) => {
+                                const eventDetails = eventSnapshot.val();
                                 resolve({ id: eventId, ...eventDetails });
-                            });
+                            }, { onlyOnce: true });
                         });
-                    });
-                    Promise.all(promises).then((events) => {
-                        setGoingEvents(events);
-                    });
+                    }));
+                    setGoingEvents(events);
                 } else {
                     setGoingEvents([]);
                 }
+                setLoading(false);
             });
+
+            return () => unsubscribe();
+        } else {
+            setLoading(false);
         }
-    }, [database]);
+    }, []);
 
     const handleLeaveEvent = (eventId) => {
         const user = auth.currentUser;
         if (user) {
+            const database = getDatabase();
             const eventRef = ref(database, `events/${eventId}/participants/${user.uid}`);
             set(eventRef, null);
 
             const userEventsRef = ref(database, `users/${user.uid}/goingEvents/${eventId}`);
             set(userEventsRef, null);
+
+            setGoingEvents((prevEvents) => prevEvents.filter(event => event.id !== eventId));
         }
     };
 
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div className="goingeventpage">
-
             <nav className="navbar">
-            <NavLink to="/homepage" className="navbar-logo-link">
+                <NavLink to="/homepage" className="navbar-logo-link">
                     <img src={logo} alt="Logo" className="navbar-logo" />
                 </NavLink>
                 <div className="navbar-links">
@@ -75,28 +83,31 @@ const GoingEventPage = () => {
                     <button className="logout-button" onClick={handleSignOut}>Logout</button>
                 </div>
             </nav>
-
             <div className="goingeventpage-content">
                 <h2>Going Events</h2>
-                <div className="events-list">
-                    {goingEvents.map((event) => (
-                        <div className="event-block" key={event.id}>
-                            <h3>{event.name}</h3>
-                            <p>Data: {event.date}</p>
-                            <p>Locație: {event.location}</p>
-                            <p>Lungime traseu: {event.length} km</p>
-                            <p>Tipul traseului: {event.type}</p>
-                            <p>Dificultate: {event.difficulty}</p>
-                            <button onClick={() => handleLeaveEvent(event.id)}>Părăsește evenimentul</button>
-                            <p>Participanți:</p>
-                            <ul>
-                                {event.participants && Object.values(event.participants).map((participant, index) => (
-                                    <li key={index}>{participant.name}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
+                {goingEvents.length > 0 ? (
+                    <div className="events-list">
+                        {goingEvents.map((event) => (
+                            <div className="event-block" key={event.id}>
+                                <h3 className='event-title'>{event.name}</h3>
+                                <p className='event-description'>Data: {event.date}</p>
+                                <p className='event-description'>Locație: {event.location}</p>
+                                <p className='event-description'>Lungime traseu: {event.length} km</p>
+                                <p className='event-description'>Tipul traseului: {event.type}</p>
+                                <p className='event-description'>Dificultate: {event.difficulty}</p>
+                                <p className='event-participants'>Participanți:</p>
+                                <ul>
+                                    {event.participants && Object.values(event.participants).map((participant, index) => (
+                                        <li className='participant-names' key={index}>{participant.name}</li>
+                                    ))}
+                                </ul>
+                                <button className='event-delete-button' onClick={() => handleLeaveEvent(event.id)}>Părăsește evenimentul</button>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p>No events you are going to.</p>
+                )}
             </div>
         </div>
     );

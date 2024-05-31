@@ -167,30 +167,29 @@ const EventPage = () => {
                 <div className="events-list">
                     {events.map((event) => (
                         <div className="event-block" key={event.id}>
-                            <h3>{event.name}</h3>
-                            <p>Data: {event.date}</p>
-                            <p>Locație: {event.location}</p>
-                            
-                            <p>Lungime traseu: {event.length} km</p>
-                            <p>Tipul traseului: {event.type}</p>
-                            <p>Dificultate: {event.difficulty}</p>
-                            {(userProfile.experience === 'Începător' && event.difficulty === 'Începător') ||
-                            (userProfile.experience === 'Avansat' && (event.difficulty === 'Avansat' || event.difficulty === 'Începător')) ? (
+                            <h3 className='event-title'>{event.name}</h3>
+                            <p className='event-description'>Data: {event.date}</p>
+                            <p className='event-description'>Locație: {event.location}</p>
+                            <p className='event-description'>Lungime traseu: {event.length} km</p>
+                            <p className='event-description'>Tipul traseului: {event.type}</p>
+                            <p className='event-description'>Dificultate: {event.difficulty}</p>
+                            {(userProfile &&(userProfile.experience === 'Începător' && event.difficulty === 'Începător')) ||
+                            (userProfile && userProfile.experience === 'Avansat' && (event.difficulty === 'Avansat' || event.difficulty === 'Începător')) ? (
                             event.participants && event.participants[auth.currentUser?.uid] ? (
-                                <p>Înscris</p>
+                                <p className='event-join-description'>Înscris</p>
                              ) : (
-                                <button onClick={() => handleParticipate(event.id, event.difficulty)}>Participă</button>
+                                <button className='event-join-button' onClick={() => handleParticipate(event.id, event.difficulty)}>Participă</button>
                                  )
                             ) : (
-                                <p>Dificultate prea mare a evenimentului</p>
+                                <p className='event-cant-join-description'>Dificultate prea mare a evenimentului</p>
                             )}
-                            <p>Participanți:</p>
+                            <p className='event-participants'>Participanți:</p>
                             <ul>
                                 {event.participants && Object.values(event.participants).map((participant, index) => (
-                                    <li key={index}>{participant.name}</li>
+                                    <li className='participant-names' key={index}>{participant.name}</li>
                                 ))}
                             </ul>
-                            <button onClick={() => handleDeleteEvent(event.id)}>Șterge evenimentul</button>
+                            <button className='event-delete-button' onClick={() => handleDeleteEvent(event.id)}>Șterge evenimentul</button>
                         </div>
                     ))}
                 </div>

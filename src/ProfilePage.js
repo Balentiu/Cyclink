@@ -63,20 +63,20 @@ const ProfilePage = () => {
             <div className="profile-container">
                 <div className='profile-wrapper'>
                     <div className="profile-container">
-                        <h2>Profile Page</h2>
+                        <h2 className='profile-title'>Profile Details</h2>
                         <form>
                         <div className='form-group'>
-                            <label>Nume întreg:</label>
-                            <input type="text" name="fullName" value={profile.fullName} onChange={handleInputChange} />
+                            <label className='profile-section-title'>Nume întreg:</label>
+                            <input className='text-input' type="text" name="fullName" value={profile.fullName} onChange={handleInputChange} />
                         </div>
 
                         <div className='form-group'>
-                        <label>Vârsta:</label>
-                        <input type="number" name="age" value={profile.age} onChange={handleInputChange} />
+                        <label className='profile-section-title'>Vârsta:</label>
+                        <input className='text-input' type="number" name="age" value={profile.age} onChange={handleInputChange} />
                         </div>
 
                         <div className='form-group'>
-                        <label>Gen:</label>
+                        <label className='profile-section-title'>Gen:</label>
                         <select name="gender" value={profile.gender} onChange={handleInputChange}>
                             <option value="Male">Masculin</option>
                             <option value="Female">Feminim</option>
@@ -85,7 +85,7 @@ const ProfilePage = () => {
                         </div>
 
                         <div className='form-group'>
-                        <label>Experiența:</label>
+                        <label className='profile-section-title'>Experiența:</label>
                         <select name="experience" value={profile.experience} onChange={handleInputChange}>
                             <option value="Începător">Începător</option>
                             <option value="Avansat">Avansat</option>

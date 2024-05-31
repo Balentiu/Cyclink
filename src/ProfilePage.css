@@ -67,9 +67,8 @@
 }
 
 .profile-wrapper{
-    
     margin-top: 200px;
-    width: 110%;
+    width: 60%;
     max-width: 700px;
     height: 110%;
     max-height: 700px;
@@ -84,8 +83,8 @@
   }
 
 .form-group {
-    margin-bottom: 20px;
-    width: 95%;
+    margin-bottom: 15px;
+    width: 100%;
   }
 
 label {
@@ -94,8 +93,16 @@ label {
     font-weight: bold;
   }
 
+  input[type="text"],
+  input[type="number"] {
+    width: 91%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }  
+
   .text-input {
-    width: 100%;
+    width: 101%;
     padding: 10px;
     background-color: #ADC1C7;
     color: #00171F;
@@ -119,4 +126,26 @@ label {
     font-family: Arial, sans-serif;
     font-size: 24px;
     font-weight: bold;
+    margin-bottom: 60px;
+}
+
+.profile-title{
+  font-size: 40px;
+  color: #003459;
+  margin-bottom: 30px;
+  margin-top: 50px;
+}
+
+.profile-section-title{
+  font-size: 22px;
+  color: #003459;
+  margin-bottom: 15px;
+}
+
+select{
+    width: 101%;
+    padding: 10px;
+    background-color: #ADC1C7;
+    color: #00171F;
+    margin-bottom: 10px;
 }
