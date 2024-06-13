@@ -11,7 +11,7 @@ const LoginPage = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+const handleLogin = async () => {
     try {
         await signInUserAuth(auth, email, password);
         navigate('/homepage');

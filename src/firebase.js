@@ -22,6 +22,4 @@ export const createUserProfile = (uid, email) => {
     return set(ref(database, `users/${uid}`), { email });
 };
 
-
-
 export default app;

@@ -11,10 +11,10 @@ const SignupPage = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleSignUp = async () => {
+const handleSignUp = async () => {
     try {
-        await createUserAuth(auth, email, password);
-        navigate('/');
+      await createUserAuth(auth, email, password);
+      navigate('/');
     } catch (error) {
       setError("Date invalide!");
     }

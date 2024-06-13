@@ -31,13 +31,11 @@ const BikeShopsMap = () => {
     onValue(shopsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const shopsArray = Object.keys(data).map((key) => ({
-          id: key,
-          ...data[key],
-        }));
+        const shopsArray = Object.keys(data).map((key) => ({id: key, ...data[key],}));
         setShops(shopsArray);
       }
-    });
+    }
+    );
   }, []);
 
   useEffect(() => {

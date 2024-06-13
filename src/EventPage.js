@@ -7,7 +7,6 @@ import './EventPage.css'
 
 const EventPage = () => {
     const navigate = useNavigate();
-
     const [events, setEvents] = useState([]);
     const [userProfile, setUserProfile] = useState(null);
     const [popupVisible, setPopupVisible] = useState(false);
@@ -52,7 +51,6 @@ const EventPage = () => {
         const { name, value } = e.target;
         setNewEvent({ ...newEvent, [name]: value });
     };
-
 
     const handleCreateEvent = () => {
         const { name, date, location, length, type, difficulty } = newEvent;
@@ -128,16 +126,20 @@ const EventPage = () => {
                 </div>
                 <button className="logout-button" onClick={handleSignOut}>Logout</button>
             </nav>
+
+            <button className="create-event-button" onClick={() => setPopupVisible(true)}>Creează eveniment</button>
+
             <div className="eventpage-content">
-                <button className="create-event-button" onClick={() => setPopupVisible(true)}>Creează eveniment</button>
                 {popupVisible && (
                     <div className="popup">
                         <div className="popup-inner">
 
+                            <h1>Detalii eveniment</h1>
+
                             <label>Nume eveniment:</label>
                             <input type="text" name="name" value={newEvent.name} onChange={handleInputChange} />
 
-                            <label>Data:{formatDate(newEvent.date)}</label>
+                            <label>Data: {formatDate(newEvent.date)}</label>
                             <input type="date" name="date" value={newEvent.date} onChange={handleInputChange} />
 
                             <label>Locația:</label>
@@ -160,7 +162,7 @@ const EventPage = () => {
 
                             {error && <p className="error-message">{error}</p>}
 
-                            <button onClick={handleCreateEvent}>Creează eveniment</button>
+                            <button className='create-button' onClick={handleCreateEvent}>Creează eveniment</button>
                         </div>
                     </div>
                 )}
